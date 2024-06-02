@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@react-navigation/native": "^6.1.17",
-    "@react-navigation/stack": "^6.3.29"
+    "@react-navigation/stack": "^6.3.29",
+    "axios": "^1.7.2"
   }
 }
