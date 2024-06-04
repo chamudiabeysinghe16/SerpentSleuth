@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = '562b8f461b60f8dcd1066f34dc0de4d9a17ab6d5ddc4a70fca8389f38235c264'; 
+const JWT_SECRET = '562b8f461b60f8dcd1066f34dc0de4d9a17ab6d5ddc4a70fca8389f38235c264';
 
 module.exports = function (req, res, next) {
   const token = req.header('x-auth-token');

@@ -2,7 +2,7 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = '562b8f461b60f8dcd1066f34dc0de4d9a17ab6d5ddc4a70fca8389f38235c264'; 
+const JWT_SECRET = '562b8f461b60f8dcd1066f34dc0de4d9a17ab6d5ddc4a70fca8389f38235c264';
 
 exports.register = async (req, res) => {
   const { name, email, username, password } = req.body;
@@ -75,6 +75,16 @@ exports.login = async (req, res) => {
         res.json({ token });
       }
     );
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
+
+exports.getUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    res.json(user);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');

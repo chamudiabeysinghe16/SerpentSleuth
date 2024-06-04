@@ -5,7 +5,7 @@ const cors = require('cors');
 
 const app = express();
 
-// Environment variables 
+// Environment variables (replace with your values)
 const MONGO_URI = 'mongodb+srv://cabeysinghe16:chamudi@serpentsleuth.pfcl4bq.mongodb.net/?retryWrites=true&w=majority&appName=SerpentSleuth';
 const PORT = 5001;
 
