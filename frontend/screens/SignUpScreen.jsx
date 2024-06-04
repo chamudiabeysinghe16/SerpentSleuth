@@ -1,25 +1,3 @@
-// import React from 'react';
-// import { View, Text, StyleSheet } from 'react-native';
-
-// const SignUpScreen = () => {
-//   return (
-//     <View style={styles.container}>
-//       <Text style={styles.text}>Sign Up Screen</Text>
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-//   text: {
-//     fontSize: 24,
-//   },
-// });
-
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import axios from 'axios';
@@ -106,7 +84,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#4CAF50',
     marginBottom: 20,
-    fontFamily: 'Roboto', // You can use a custom font if you have one
+    fontFamily: 'Roboto', 
   },
   input: {
     width: '100%',

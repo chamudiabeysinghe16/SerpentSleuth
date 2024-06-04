@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -13,8 +14,9 @@ const LoginScreen = ({ navigation }) => {
         password,
       });
       if (response.data.token) {
+        await AsyncStorage.setItem('token', response.data.token);
         Alert.alert('Success', 'Logged in successfully');
-        // Navigate to another screen or handle login state
+        navigation.navigate('Menu');
       }
     } catch (error) {
       Alert.alert('Error', error.response.data.msg || 'Invalid credentials');
@@ -60,7 +62,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#4CAF50',
     marginBottom: 20,
-    fontFamily: 'Roboto', // You can use a custom font if you have one
+    fontFamily: 'Roboto', 
   },
   input: {
     width: '100%',
