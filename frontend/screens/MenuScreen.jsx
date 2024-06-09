@@ -3,13 +3,13 @@ import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image } from 'rea
 
 const MenuScreen = ({ navigation }) => {
   const { width } = Dimensions.get('window');
-  const buttonWidth = (width / 2) - 20; // Adjust width for two buttons per row with padding
+  const buttonWidth = (width / 2) - 20;
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Welcome to</Text>
-        <Text style={styles.headerTextBold}>SerpentSleuth</Text>
+        <Text style={styles.headerText}>Welcome to SerpentSleuth</Text>
+        <Text style={styles.headerSubText}>A Project by Chamudi Abeysinghe</Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={[styles.button, { width: buttonWidth }]} onPress={() => navigation.navigate('IdentifySnakes')}>
@@ -17,22 +17,22 @@ const MenuScreen = ({ navigation }) => {
           <Text style={styles.buttonText}>Identify Snakes</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.button, { width: buttonWidth }]} onPress={() => navigation.navigate('SnakesInfo')}>
-          <Image source={require('../assets/snake.png')} style={styles.buttonImage} />
+          <Image source={require('../assets/history.png')} style={styles.buttonImage} />
           <Text style={styles.buttonText}>Snakes Info</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={[styles.button, { width: buttonWidth }]} onPress={() => navigation.navigate('Blog')}>
-          <Image source={require('../assets/snake.png')} style={styles.buttonImage} />
+          <Image source={require('../assets/blog.png')} style={styles.buttonImage} />
           <Text style={styles.buttonText}>Blog</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.button, { width: buttonWidth }]} onPress={() => navigation.navigate('Profile')}>
-          <Image source={require('../assets/snake.png')} style={styles.buttonImage} />
+          <Image source={require('../assets/user.png')} style={styles.buttonImage} />
           <Text style={styles.buttonText}>Profile</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.fullWidthButton} onPress={() => navigation.navigate('Login')}>
-        <Image source={require('../assets/snake.png')} style={styles.buttonImage} />
+      <TouchableOpacity style={styles.fullWidthButton} onPress={() => navigation.navigate('Welcome')}>
+        <Image source={require('../assets/log-out.png')} style={styles.buttonImage} />
         <Text style={styles.fullWidthButtonText}>Log Out</Text>
       </TouchableOpacity>
     </View>
@@ -46,29 +46,40 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#4CAF50',
-    paddingVertical: 20,
-    paddingHorizontal: 10,
+    width: '100%',
+    paddingVertical: 10,
     alignItems: 'center',
     justifyContent: 'center',
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    marginBottom: 10,
+    marginTop:100,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 8,
-    marginTop: 90,
+    marginBottom: 30,
   },
   headerText: {
     color: '#FFF',
     fontSize: 28,
+    fontWeight: 'bold',
     fontFamily: 'Roboto',
   },
-  headerTextBold: {
+  headerSubText: {
     color: '#FFF',
+    fontSize: 16,
+    fontFamily: 'Roboto',
+  },
+  welcomeText: {
+    color: '#4CAF50',
+    fontSize: 28,
+    fontFamily: 'Roboto',
+  },
+  welcomeTextBold: {
+    color: '#4CAF50',
     fontSize: 34,
     fontWeight: 'bold',
     fontFamily: 'Roboto',
