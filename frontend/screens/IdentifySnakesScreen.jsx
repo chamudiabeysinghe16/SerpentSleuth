@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const IdentifySnakesScreen = ({ navigation }) => {
   const [imageUri, setImageUri] = useState(null);
+  const [prediction, setPrediction] = useState(null);
 
   const handleImageUpload = () => {
     const options = {
@@ -21,6 +22,7 @@ const IdentifySnakesScreen = ({ navigation }) => {
       } else {
         const source = { uri: response.assets[0].uri };
         setImageUri(source.uri);
+        setPrediction(null);  // Reset prediction
       }
     });
   };
@@ -39,6 +41,7 @@ const IdentifySnakesScreen = ({ navigation }) => {
       } else {
         const source = { uri: response.assets[0].uri };
         setImageUri(source.uri);
+        setPrediction(null);  // Reset prediction
       }
     });
   };
@@ -58,16 +61,16 @@ const IdentifySnakesScreen = ({ navigation }) => {
         type: 'image/jpeg',
       });
 
-      const response = await axios.post('http://localhost:5001/api/predict', formData, {
+      const response = await axios.post('http://127.0.0.1:5000/classify', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'x-auth-token': token,
         },
       });
 
-      if (response.data.success) {
-        Alert.alert('Prediction Result', response.data.prediction);
-        // Log the result in the database or handle it as needed
+      if (response.data.prediction) {
+        setPrediction(response.data.prediction);
+        Alert.alert('Prediction Result', `Predicted class: ${response.data.prediction}`);
       } else {
         Alert.alert('Error', 'Prediction failed');
       }
@@ -79,40 +82,60 @@ const IdentifySnakesScreen = ({ navigation }) => {
 
   const handleRemoveImage = () => {
     setImageUri(null);
+    setPrediction(null);  // Reset prediction
+  };
+
+  const handleLogResult = () => {
+    if (imageUri && prediction) {
+      navigation.navigate('LogSnake', { imageUri, prediction });
+    } else {
+      Alert.alert('Error', 'No image or prediction to log');
+    }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Identify Snakes</Text>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>SerpentSleuth</Text>
+        <Text style={styles.headerSubText}>A Project by Chamudi Abeysinghe</Text>
+      </View>
+      
       {!imageUri ? (
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={handleCapturePhoto}>
-            <Image source={require('../assets/snake.png')} style={styles.buttonImage} />
+            <Image source={require('../assets/image.png')} style={styles.buttonImage} />
             <Text style={styles.buttonText}>Capture Snake Photo</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={handleImageUpload}>
-            <Image source={require('../assets/snake.png')} style={styles.buttonImage} />
+            <Image source={require('../assets/screenshot.png')} style={styles.buttonImage} />
             <Text style={styles.buttonText}>Upload Snake Image</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Menu')}>
-            <Image source={require('../assets/snake.png')} style={styles.buttonImage} />
+            <Image source={require('../assets/return.png')} style={styles.buttonImage} />
             <Text style={styles.buttonText}>Back to Menu</Text>
           </TouchableOpacity>
         </View>
       ) : (
         <>
           <Image source={{ uri: imageUri }} style={styles.image} />
+          {prediction !== null && (
+            <Text style={styles.predictionText}>Prediction: {prediction}</Text>
+          )}
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={handlePrediction}>
-              <Image source={require('../assets/snake.png')} style={styles.buttonImage} />
+              <Image source={require('../assets/predictive.png')} style={styles.buttonImage} />
               <Text style={styles.buttonText}>Make Prediction</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={handleRemoveImage}>
-              <Image source={require('../assets/snake.png')} style={styles.buttonImage} />
+              <Image source={require('../assets/remove.png')} style={styles.buttonImage} />
               <Text style={styles.buttonText}>Remove Image</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={handleLogResult}>
+              <Image source={require('../assets/log.png')} style={styles.buttonImage} />
+              <Text style={styles.buttonText}>Log Result</Text>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Menu')}>
-              <Image source={require('../assets/snake.png')} style={styles.buttonImage} />
+              <Image source={require('../assets/return.png')} style={styles.buttonImage} />
               <Text style={styles.buttonText}>Back to Menu</Text>
             </TouchableOpacity>
           </View>
@@ -129,6 +152,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
     backgroundColor: '#E8F5E9',
+  },
+  header: {
+    width: '100%',
+    backgroundColor: '#4CAF50',
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
+    marginBottom: 20,
+  },
+  headerText: {
+    color: '#FFF',
+    fontSize: 28,
+    fontWeight: 'bold',
+    fontFamily: 'Roboto',
+  },
+  headerSubText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontFamily: 'Roboto',
   },
   title: {
     fontSize: 34,
@@ -167,6 +219,12 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
     borderRadius: 8,
+    marginVertical: 20,
+  },
+  predictionText: {
+    fontSize: 24,
+    color: '#4CAF50',
+    fontWeight: 'bold',
     marginVertical: 20,
   },
 });
