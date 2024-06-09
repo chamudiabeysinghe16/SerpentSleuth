@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
 import axios from 'axios';
 
 const SignUpScreen = ({ navigation }) => {
@@ -27,6 +27,10 @@ const SignUpScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <Image 
+        source={require('../assets/add-user.png')} 
+        style={styles.logo}
+      />
       <Text style={styles.title}>Create Account</Text>
       <TextInput
         style={styles.input}
@@ -64,7 +68,7 @@ const SignUpScreen = ({ navigation }) => {
       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
         <Text style={styles.loginText}>Already have an account? <Text style={styles.loginTextBold}>Log In</Text></Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => {/* Handle Forgot Password */}}>
+      <TouchableOpacity onPress={() => Alert.alert('Forgot Password', 'Forgot password functionality coming soon!')}>
         <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
       </TouchableOpacity>
     </View>
@@ -79,12 +83,17 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#E8F5E9',
   },
+  logo: {
+    width: 100,
+    height: 100,
+    marginBottom: 20,
+  },
   title: {
     fontSize: 34,
     fontWeight: '700',
     color: '#4CAF50',
     marginBottom: 20,
-    fontFamily: 'Roboto', 
+    fontFamily: 'Roboto',
   },
   input: {
     width: '100%',
