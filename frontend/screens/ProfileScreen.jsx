@@ -40,7 +40,7 @@ const ProfileScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: 'https://via.placeholder.com/150' }} // Placeholder image
+        source={require('../assets/woman.png')} 
         style={styles.profileImage}
       />
       <Text style={styles.name}>{user.name}</Text>
