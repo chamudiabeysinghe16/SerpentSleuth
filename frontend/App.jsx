@@ -18,8 +18,8 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Welcome">
         <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="SignUp" component={SignUpScreen} />
-        <Stack.Screen name="Login" component={LoginScreen}  />
+        <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Menu" component={MenuScreen} options={{ headerShown: false }}/>
         <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }}/>
         <Stack.Screen name="IdentifySnakes" component={IdentifySnakesScreen} options={{ headerShown: false }} />
