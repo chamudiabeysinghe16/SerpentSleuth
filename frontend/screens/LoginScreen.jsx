@@ -23,8 +23,8 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  const handleGuestLogin = () => {
-    // Add your guest login logic here
+  const handleGuestLogin = async () => {
+    await AsyncStorage.removeItem('token');  // Ensure no token is set
     Alert.alert('Guest Login', 'Logged in as guest');
     navigation.navigate('Menu');
   };
@@ -32,7 +32,7 @@ const LoginScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image 
-        source={require('../assets/account.png')} 
+        source={require('../assets/account.png')} // Use local image from assets
         style={styles.logo}
       />
       <Text style={styles.title}>Login</Text>
@@ -60,7 +60,7 @@ const LoginScreen = ({ navigation }) => {
       </TouchableOpacity>
       <View style={styles.footer}>
         <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-        <Text style={styles.loginText}>Don't have an account? <Text style={styles.loginTextBold}>Sign Up</Text></Text>
+          <Text style={styles.loginText}>Don't have an account? <Text style={styles.loginTextBold}>Sign Up</Text></Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => Alert.alert('Forgot Password', 'Forgot password functionality coming soon!')}>
           <Text style={styles.footerText}>Forgot Password?</Text>

@@ -1,9 +1,28 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MenuScreen = ({ navigation }) => {
   const { width } = Dimensions.get('window');
   const buttonWidth = (width / 2) - 20;
+  const [isGuest, setIsGuest] = useState(false);
+
+  useEffect(() => {
+    const checkGuest = async () => {
+      const token = await AsyncStorage.getItem('token');
+      if (!token) {
+        setIsGuest(true);
+      }
+    };
+
+    checkGuest();
+  }, []);
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('token');
+    Alert.alert('Logged Out', 'You have been logged out.');
+    navigation.navigate('Welcome');
+  };
 
   return (
     <View style={styles.container}>
@@ -26,15 +45,30 @@ const MenuScreen = ({ navigation }) => {
           <Image source={require('../assets/blog.png')} style={styles.buttonImage} />
           <Text style={styles.buttonText}>Blog</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, { width: buttonWidth }]} onPress={() => navigation.navigate('Profile')}>
+        <TouchableOpacity style={[styles.button, { width: buttonWidth }]} onPress={() => {
+          if (isGuest) {
+            Alert.alert('Guest User', 'Please sign up to view your profile', [
+              { text: 'OK', onPress: () => navigation.navigate('SignUp') }
+            ]);
+          } else {
+            navigation.navigate('Profile');
+          }
+        }}>
           <Image source={require('../assets/user.png')} style={styles.buttonImage} />
           <Text style={styles.buttonText}>Profile</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.fullWidthButton} onPress={() => navigation.navigate('Welcome')}>
-        <Image source={require('../assets/log-out.png')} style={styles.buttonImage} />
-        <Text style={styles.fullWidthButtonText}>Log Out</Text>
-      </TouchableOpacity>
+      {isGuest ? (
+        <TouchableOpacity style={styles.fullWidthButton} onPress={() => navigation.navigate('SignUp')}>
+          <Image source={require('../assets/log-out.png')} style={styles.buttonImage} />
+          <Text style={styles.fullWidthButtonText}>Sign Up</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity style={styles.fullWidthButton} onPress={handleLogout}>
+          <Image source={require('../assets/log-out.png')} style={styles.buttonImage} />
+          <Text style={styles.fullWidthButtonText}>Log Out</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

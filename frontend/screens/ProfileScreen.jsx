@@ -1,33 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfileScreen = ({ navigation }) => {
   const [user, setUser] = useState(null);
+  const [isGuest, setIsGuest] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
-      try {
-        const token = await AsyncStorage.getItem('token');
-        if (token) {
+      const token = await AsyncStorage.getItem('token');
+      if (token) {
+        try {
           const response = await axios.get('http://localhost:5001/api/auth/user', {
-            headers: {
-              'x-auth-token': token,
-            },
+            headers: { 'x-auth-token': token },
           });
           setUser(response.data);
-        } else {
+        } catch (error) {
+          console.error(error);
           navigation.navigate('Login');
         }
-      } catch (error) {
-        console.error(error);
-        navigation.navigate('Login');
+      } else {
+        setIsGuest(true);
+        Alert.alert('Guest User', 'Please sign up to view your profile', [
+          { text: 'OK', onPress: () => navigation.navigate('SignUp') }
+        ]);
       }
     };
 
     fetchUser();
   }, [navigation]);
+
+  if (isGuest) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.guestText}>Guest users cannot access profiles.</Text>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SignUp')}>
+          <Text style={styles.buttonText}>Sign Up</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   if (!user) {
     return (
@@ -39,10 +52,7 @@ const ProfileScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require('../assets/woman.png')} 
-        style={styles.profileImage}
-      />
+      <Image source={require('../assets/woman.png')} style={styles.profileImage} />
       <Text style={styles.name}>{user.name}</Text>
       <View style={styles.infoContainer}>
         <Text style={styles.infoLabel}>Email:</Text>
@@ -71,6 +81,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#4CAF50',
+  },
+  guestText: {
+    fontSize: 18,
+    color: '#333',
+    marginVertical: 10,
   },
   profileImage: {
     width: 150,

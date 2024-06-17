@@ -22,7 +22,7 @@ const IdentifySnakesScreen = ({ navigation }) => {
       } else {
         const source = { uri: response.assets[0].uri };
         setImageUri(source.uri);
-        setPrediction(null);  // Reset prediction
+        setPrediction(null);
       }
     });
   };
@@ -41,7 +41,7 @@ const IdentifySnakesScreen = ({ navigation }) => {
       } else {
         const source = { uri: response.assets[0].uri };
         setImageUri(source.uri);
-        setPrediction(null);  // Reset prediction
+        setPrediction(null);
       }
     });
   };
@@ -82,11 +82,16 @@ const IdentifySnakesScreen = ({ navigation }) => {
 
   const handleRemoveImage = () => {
     setImageUri(null);
-    setPrediction(null);  // Reset prediction
+    setPrediction(null);
   };
 
-  const handleLogResult = () => {
+  const handleLogResult = async () => {
     if (imageUri && prediction) {
+      const token = await AsyncStorage.getItem('token');
+      if (!token) {
+        Alert.alert('Error', 'Please log in to save results');
+        return;
+      }
       navigation.navigate('LogSnake', { imageUri, prediction });
     } else {
       Alert.alert('Error', 'No image or prediction to log');

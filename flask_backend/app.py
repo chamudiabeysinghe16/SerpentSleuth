@@ -17,7 +17,7 @@ if not os.path.exists(UPLOAD_FOLDER):
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Load your model
-model = load_model('/Users/chamudi/Desktop/changed data/Project_SerpentSleuth/h5/ensemble/ensemble_version1_1.h5')
+model = load_model('/Users/chamudi/Desktop/Project_SerpentSleuth/h5/ensemble/ensemble_version_13.h5')
 
 # Image preprocessing function to match your Jupyter notebook
 def preprocess_image(img_path):
